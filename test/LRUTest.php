@@ -2,6 +2,9 @@
 //require_once('PHPUnit/Autoload.php');
 require_once(dirname(__FILE__).'/../src/LRUCache/LRUCache.php');
 
+/**
+ * Class LRUCacheTest
+ */
 class LRUCacheTest extends PHPUnit_Framework_TestCase {
 
     public function testStartsEmpty() {
@@ -46,9 +49,9 @@ class LRUCacheTest extends PHPUnit_Framework_TestCase {
         $numEntries = 90000;
         $lru = new \LRUCache\LRUCache($numEntries);
 
-        while($numEntries > 0) {
-            $lru->put($numEntries - 899999, 'some value...');
-            $numEntries--;
+
+        for ( $i = 0; $i < $numEntries; $i++ ) {
+            $lru->put($i, 'some value...');
         }
     }
 
