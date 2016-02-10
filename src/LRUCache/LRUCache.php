@@ -12,24 +12,36 @@ namespace LRUCache;
  */
 class LRUCache {
 
-    // object Node representing the head of the list
+    /**
+     * @var Node representing the head of the list
+     */
     private $head;
 
-    // object Node representing the tail of the list
+    /**
+     * @var Node representing the tail of the list
+     */
     private $tail;
 
-    // int the max number of elements the cache supports
-    private $capacity;
-
-    // Array representing a naive hashmap (TODO needs to pass the key through a hash function)
-    private $hashmap;
+    /**
+     * @var int the max number of elements the cache supports
+     */
+    private $maxCapacity;
 
     /**
-     * @param int $capacity the max number of elements the cache allows
+     * @var int the current number of elements
      */
-    public function __construct($capacity) {
-        $this->capacity = $capacity;
-        $this->hashmap = array();
+    private $currentCapacity = 0;
+
+    /**
+     * @var Node[] representing a naive hashmap (TODO needs to pass the key through a hash function)
+     */
+    private $hashmap = [];
+
+    /**
+     * @param int $maxCapacity the max number of elements the cache allows
+     */
+    public function __construct( $maxCapacity) {
+        $this->maxCapacity = $maxCapacity;
         $this->head = new Node(null, null);
         $this->tail = new Node(null, null);
 
@@ -57,13 +69,13 @@ class LRUCache {
     }
 
     /**
-     * Inserts a new element into the cache 
+     * Inserts a new element into the cache
      * @param string $key the key of the new element
      * @param string $data the content of the new element
      * @return boolean true on success, false if cache has zero capacity
      */
     public function put($key, $data) {
-        if ($this->capacity <= 0) { return false; }
+        if ($this->maxCapacity <= 0) { return false; }
         if (isset($this->hashmap[$key]) && !empty($this->hashmap[$key])) {
             $node = $this->hashmap[$key];
             // update data
@@ -74,14 +86,13 @@ class LRUCache {
         else {
             $node = new Node($key, $data);
             $this->hashmap[$key] = $node;
+            ++$this->currentCapacity;
             $this->attach($this->head, $node);
 
             // check if cache is full
-            if (count($this->hashmap) > $this->capacity) {
+            if ($this->currentCapacity > $this->maxCapacity) {
                 // we're full, remove the tail
-                $nodeToRemove = $this->tail->getPrevious();
-                $this->detach($nodeToRemove);
-                unset($this->hashmap[$nodeToRemove->getKey()]);
+                $this->remove($this->tail->getPrevious()->getKey());
             }
         }
         return true;
@@ -97,6 +108,7 @@ class LRUCache {
        $nodeToRemove = $this->hashmap[$key];
        $this->detach($nodeToRemove);
        unset($this->hashmap[$nodeToRemove->getKey()]);
+       --$this->currentCapacity;
        return true;
      }
 
@@ -119,95 +131,6 @@ class LRUCache {
     private function detach($node) {
         $node->getPrevious()->setNext($node->getNext());
         $node->getNext()->setPrevious($node->getPrevious());
-    }
-
-}
-
-/**
- * Class that represents a node in a doubly linked list
- */
-class Node {
-
-    /**
-     * the key of the node, this might seem reduntant,
-     * but without this duplication, we don't have a fast way
-     * to retrieve the key of a node when we wan't to remove it
-     * from the hashmap.
-     */
-    private $key;
-
-    // the content of the node
-    private $data;
-
-    // the next node
-    private $next;
-
-    // the previous node
-    private $previous;
-
-    /**
-     * @param string $key the key of the node
-     * @param string $data the content of the node
-     */
-    public function __construct($key, $data) {
-        $this->key = $key;
-        $this->data = $data;
-    }
-
-    /**
-     * Sets a new value for the node data
-     * @param string the new content of the node
-     */
-    public function setData($data) {
-        $this->data = $data;
-    }
-
-    /**
-     * Sets a node as the next node
-     * @param Node $next the next node
-     */
-    public function setNext($next) {
-        $this->next = $next;
-    }
-
-    /**
-     * Sets a node as the previous node
-     * @param Node $previous the previous node
-     */
-    public function setPrevious($previous) {
-        $this->previous = $previous;
-    }
-
-    /**
-     * Returns the node key
-     * @return string the key of the node
-     */
-    public function getKey() {
-        return $this->key;
-    }
-
-    /**
-     * Returns the node data
-     * @return mixed the content of the node
-     */
-    public function getData() {
-        return $this->data;
-    }
-
-    /**
-     * Returns the next node
-     * @return Node the next node of the node
-     */
-    public function getNext() {
-        return $this->next;
-    }
-
-    /**
-     * Returns the previous node
-     * @return Node the previous node of the node
-     */
-    public function getPrevious() {
-        return $this->previous;
     }
 
 }
