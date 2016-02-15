@@ -21,7 +21,7 @@ This implementation is similar to a [LinkedHashMap][2]. Right now I'm just messi
 Add the package into your `composer.json` file:
 
     "require": {
-        "lrucache/lrucache": "master-dev"
+        "justin-robinson/lrucache": "dev-master"
     }
 
 Then run the command:
