@@ -1,14 +1,14 @@
 {
-    "name": "lrucache/lrucache",
+    "name": "justin-robinson/lrucache",
     "description": "PHP LRU Cache implementation",
     "keywords": ["php", "lru", "cache"],
-    "homepage": "https://github.com/rogeriopvl/php-lrucache",
+    "homepage": "https://github.com/justin-robinson/php-lrucache",
     "license": "MIT",
     "authors": [
         {
-            "name": "Rogério Vicente",
-            "email": "rogeriopvl@gmail.com",
-            "homepage": "http://rogeriopvl.com",
+            "name": "Justin Robinson",
+            "email": "jrob09bhs@gmail.com",
+            "homepage": "https://jor.pw",
             "role": "Developer"
         }
     ],
