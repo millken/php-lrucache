@@ -3,7 +3,7 @@
     "description": "PHP LRU Cache implementation",
     "keywords": ["php", "lru", "cache"],
     "homepage": "https://github.com/justin-robinson/php-lrucache",
-    "license": "MIT",
+    "license": "Apache-2.0",
     "authors": [
         {
             "name": "Justin Robinson",
