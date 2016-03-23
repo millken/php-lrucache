@@ -1,6 +1,10 @@
-[![Build Status](https://travis-ci.org/rogeriopvl/php-lrucache.png)](https://travis-ci.org/rogeriopvl/php-lrucache)
-
 # PHP LRU Cache implementation
+
+Forked from [https://github.com/rogeriopvl/php-lrucache][3]
+
+Changes
+* Reduce cost of inserting to cache from O(n) to O(1)
+* Fix phpunit tests
 
 ## Intro
 
@@ -46,3 +50,4 @@ You can use the tests to try things like load testing etc.
 [0]: http://java-planet.blogspot.pt/2005/08/how-to-set-up-simple-lru-cache-using.html
 [1]: http://www.vldb.org/conf/1994/P439.PDF
 [2]: http://docs.oracle.com/javase/7/docs/api/java/util/LinkedHashMap.html
+[3]: https://github.com/rogeriopvl/php-lrucache
