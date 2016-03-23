@@ -8,7 +8,7 @@ Changes
 
 ## Intro
 
-### WTF is a LRU Cache?
+### What is a LRU Cache?
 
 LRU stands for Least Recently Used. It's a type of cache that usually has a fixed capacity and discards the oldest entries. This is specially useful if you have the need to control the cache memory usage.
 
