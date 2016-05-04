@@ -139,7 +139,9 @@ class LRUCache {
      * @param $callback
      */
     public function walkCache ( $callback ) {
-        array_walk($this->hashmap, $callback);
+        array_walk($this->hashmap, function($node) use ($callback) {
+            $callback($node->getData());
+        });
     }
 
     /**
