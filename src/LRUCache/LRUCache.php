@@ -37,12 +37,6 @@ class LRUCache {
     private $hashmap = [ ];
 
     /**
-     * Iterator position
-     * @var int
-     */
-    private $position = 0;
-
-    /**
      * @param int $maxCapacity the max number of elements the cache allows
      */
     public function __construct ( $maxCapacity ) {
