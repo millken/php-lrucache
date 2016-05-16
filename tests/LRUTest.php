@@ -103,7 +103,7 @@ class LRUCacheTest extends PHPUnit_Framework_TestCase {
         $this->assertNull($lru->get($key1));
     }
 
-    public function testCacheWalk () {
+    public function testCacheEach () {
         $numEntries = 5;
         $lru = new \LRUCache\LRUCache($numEntries);
 
@@ -117,5 +117,16 @@ class LRUCacheTest extends PHPUnit_Framework_TestCase {
 
         $this->assertEquals($lru->get(4), 8);
 
+    }
+    
+    public function testExists () {
+        
+        $lru = new \LRUCache\LRUCache( 5 );
+        
+        $this->assertFalse( $lru->exists( 'test' ) );
+
+        $lru->put('test', false);
+
+        $this->assertTrue( $lru->exists( 'test' ) );
     }
 }

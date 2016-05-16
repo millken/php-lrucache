@@ -50,6 +50,16 @@ class LRUCache {
     }
 
     /**
+     * @param $key
+     *
+     * @return bool
+     */
+    public function exists ( $key ) {
+
+        return isset( $this->hashmap[$key] );
+    }
+
+    /**
      * Get an element with the given key
      *
      * @param string $key the key of the element to be retrieved
@@ -58,7 +68,7 @@ class LRUCache {
      */
     public function get ( $key ) {
 
-        if ( !isset( $this->hashmap[$key] ) ) {
+        if ( !$this->exists( $key ) ) {
             return null;
         }
 
