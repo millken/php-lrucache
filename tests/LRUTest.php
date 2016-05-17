@@ -1,17 +1,19 @@
 <?php
 
+use LRUCache\LRUCache;
+
 /**
  * Class LRUCacheTest
  */
 class LRUCacheTest extends PHPUnit_Framework_TestCase {
 
     public function testStartsEmpty() {
-        $lru = new \LRUCache\LRUCache(1000);
+        $lru = new LRUCache(1000);
         $this->assertNull($lru->get(1));
     }
 
     public function testGet() {
-        $lru = new \LRUCache\LRUCache(1000);
+        $lru = new LRUCache(1000);
         $key = 'key1';
         $data = 'content for key1';
         $lru->put($key, $data);
@@ -19,7 +21,7 @@ class LRUCacheTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testMultipleGet() {
-        $lru = new \LRUCache\LRUCache(1000);
+        $lru = new LRUCache(1000);
         $key = 'key1';
         $data = 'content for key1';
         $key2 = 'key2';
@@ -34,7 +36,7 @@ class LRUCacheTest extends PHPUnit_Framework_TestCase {
 
     public function testPut() {
         $numEntries = 1000;
-        $lru = new \LRUCache\LRUCache($numEntries);
+        $lru = new LRUCache($numEntries);
 
         $key1 = 'mykey1';
         $value1 = 'myvaluefromkey1';
@@ -45,7 +47,7 @@ class LRUCacheTest extends PHPUnit_Framework_TestCase {
 
     public function testMassivePut() {
         $numEntries = 80000;
-        $lru = new \LRUCache\LRUCache($numEntries);
+        $lru = new LRUCache($numEntries);
 
 
         for ( $i = 0; $i < $numEntries; $i++ ) {
@@ -55,7 +57,7 @@ class LRUCacheTest extends PHPUnit_Framework_TestCase {
 
     public function testRemove() {
         $numEntries = 3;
-        $lru = new \LRUCache\LRUCache($numEntries);
+        $lru = new LRUCache($numEntries);
 
         $lru->put('key1', 'value1');
         $lru->put('key2', 'value2');
@@ -76,7 +78,7 @@ class LRUCacheTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testPutWhenFull() {
-        $lru = new \LRUCache\LRUCache(3);
+        $lru = new LRUCache(3);
 
         $key1 = 'key1';
         $value1 = 'value1forkey1';
@@ -105,14 +107,14 @@ class LRUCacheTest extends PHPUnit_Framework_TestCase {
 
     public function testCacheEach () {
         $numEntries = 5;
-        $lru = new \LRUCache\LRUCache($numEntries);
+        $lru = new LRUCache($numEntries);
 
         foreach ( range(0,$numEntries) as $i ) {
             $lru->put($i, $i);
         }
 
-        $lru->each(function ($node) {
-            $node->setData($node->getData() * 2);
+        $lru->each(function (&$node) {
+            $node *= 2;
         });
 
         $this->assertEquals($lru->get(4), 8);
@@ -121,7 +123,7 @@ class LRUCacheTest extends PHPUnit_Framework_TestCase {
     
     public function testExists () {
         
-        $lru = new \LRUCache\LRUCache( 5 );
+        $lru = new LRUCache( 5 );
         
         $this->assertFalse( $lru->exists( 'test' ) );
 

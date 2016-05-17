@@ -12,14 +12,19 @@ namespace LRUCache;
 class LRUCache {
 
     /**
+     * @var int the current number of elements
+     */
+    private $currentCapacity = 0;
+
+    /**
+     * @var Node[] representing a naive hashmap
+     */
+    private $hashmap = [ ];
+
+    /**
      * @var Node representing the head of the list
      */
     private $head;
-
-    /**
-     * @var Node representing the tail of the list
-     */
-    private $tail;
 
     /**
      * @var int the max number of elements the cache supports
@@ -27,14 +32,9 @@ class LRUCache {
     private $maxCapacity;
 
     /**
-     * @var int the current number of elements
+     * @var Node representing the tail of the list
      */
-    private $currentCapacity = 0;
-
-    /**
-     * @var Node[] representing a naive hashmap (TODO needs to pass the key through a hash function)
-     */
-    private $hashmap = [ ];
+    private $tail;
 
     /**
      * @param int $maxCapacity the max number of elements the cache allows
@@ -45,8 +45,20 @@ class LRUCache {
         $this->head = new Node( null, null );
         $this->tail = new Node( null, null );
 
-        $this->head->setNext ( $this->tail );
-        $this->tail->setPrevious ( $this->head );
+        $this->head->set_next( $this->tail );
+        $this->tail->set_previous( $this->head );
+    }
+
+    /**
+     * Performs an out of order walk of the cache
+     *
+     * @param $callback
+     */
+    public function each ( $callback ) {
+
+        array_walk( $this->hashmap, function ( $node ) use ( $callback ) {
+            $callback( $node->get_data() );
+        } );
     }
 
     /**
@@ -56,7 +68,7 @@ class LRUCache {
      */
     public function exists ( $key ) {
 
-        return isset( $this->hashmap[$key] );
+        return isset($this->hashmap[$key]);
     }
 
     /**
@@ -68,20 +80,25 @@ class LRUCache {
      */
     public function get ( $key ) {
 
-        if ( !$this->exists( $key ) ) {
+        // can't get something that isn't there
+        if( !$this->exists( $key ) ) {
             return null;
         }
 
+        // the node we are returning
         $node = $this->hashmap[$key];
-        if ( count ( $this->hashmap ) == 1 ) {
-            return $node->getData ();
+
+        // if this is the only node, just return the data
+        if( $this->currentCapacity === 1 ) {
+
+            return $node->get_data();
         }
 
-        // refresh the access
-        $this->detach ( $node );
-        $this->attach ( $this->head, $node );
+        // put node at head
+        $this->detach( $node );
+        $this->attach( $this->head, $node );
 
-        return $node->getData ();
+        return $node->get_data();
     }
 
     /**
@@ -94,25 +111,42 @@ class LRUCache {
      */
     public function put ( $key, $data ) {
 
-        if ( $this->maxCapacity <= 0 ) {
+        // can't put to a cache with no size
+        if( $this->maxCapacity <= 0 ) {
             return false;
         }
-        if ( isset( $this->hashmap[$key] ) && !empty( $this->hashmap[$key] ) ) {
+
+        // does this key exist?
+        if( $this->exists( $key ) ) {
+
+            // get the saved node
             $node = $this->hashmap[$key];
+
+            // put node at head
+            $this->detach( $node );
+            $this->attach( $this->head, $node );
+
             // update data
-            $this->detach ( $node );
-            $this->attach ( $this->head, $node );
-            $node->setData ( $data );
+            $node->set_data( $data );
+
         } else {
+
+            // create a new node
             $node = new Node( $key, $data );
+
+            // save the node
             $this->hashmap[$key] = $node;
+
+            // increment capacity
             ++$this->currentCapacity;
-            $this->attach ( $this->head, $node );
+
+            // put node at head
+            $this->attach( $this->head, $node );
 
             // check if cache is full
-            if ( $this->currentCapacity > $this->maxCapacity ) {
+            if( $this->currentCapacity > $this->maxCapacity ) {
                 // we're full, remove the tail
-                $this->remove ( $this->tail->getPrevious ()->getKey () );
+                $this->remove( $this->tail->get_previous()->get_key() );
             }
         }
 
@@ -128,24 +162,24 @@ class LRUCache {
      */
     public function remove ( $key ) {
 
-        if ( !isset( $this->hashmap[$key] ) ) {
+        // can't remove something that isn't there
+        if( !$this->exists( $key ) ) {
             return false;
         }
+
+        // get the node to remove
         $nodeToRemove = $this->hashmap[$key];
-        $this->detach ( $nodeToRemove );
-        unset( $this->hashmap[$nodeToRemove->getKey ()] );
+
+        // remove the node from the list
+        $this->detach( $nodeToRemove );
+
+        // remove node from hash
+        unset($this->hashmap[$nodeToRemove->get_key()]);
+
+        // decrement capacity
         --$this->currentCapacity;
 
         return true;
-    }
-
-    /**
-     * @param $callback
-     */
-    public function each ( $callback ) {
-        array_walk($this->hashmap, function($node) use ($callback) {
-            $callback($node);
-        });
     }
 
     /**
@@ -156,10 +190,20 @@ class LRUCache {
      */
     private function attach ( Node $head, Node $node ) {
 
-        $node->setPrevious ( $head );
-        $node->setNext ( $head->getNext () );
-        $node->getNext ()->setPrevious ( $node );
-        $node->getPrevious ()->setNext ( $node );
+        // the soon to be second node in our list, currently the first one
+        $secondNode = $head->get_next();
+
+        // tell this node it's right after the head
+        $node->set_previous( $head );
+
+        // tell this node what the second node is
+        $node->set_next( $secondNode );
+
+        // tell the second node that this node comes before it now
+        $secondNode->set_previous( $node );
+
+        // tell head we are the next node
+        $head->set_next( $node );
     }
 
     /**
@@ -169,8 +213,13 @@ class LRUCache {
      */
     private function detach ( Node $node ) {
 
-        $node->getPrevious ()->setNext ( $node->getNext () );
-        $node->getNext ()->setPrevious ( $node->getPrevious () );
+        // point previous node to next node
+        $node->get_previous()->set_next( $node->get_next() );
+
+        // point next node to previous node
+        $node->get_next()->set_previous( $node->get_previous() );
+
+        // $node is now dangling
     }
 
 }
