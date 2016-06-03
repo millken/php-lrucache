@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/justin-robinson/php-lrucache.svg?branch=master)](https://travis-ci.org/justin-robinson/php-lrucache)
+[![Coverage Status](https://coveralls.io/repos/github/justin-robinson/php-lrucache/badge.svg?branch=master)](https://coveralls.io/github/justin-robinson/php-lrucache?branch=master)
 # PHP LRU Cache implementation
 
 Forked from [https://github.com/rogeriopvl/php-lrucache][3]
