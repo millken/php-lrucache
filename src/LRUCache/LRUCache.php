@@ -9,7 +9,7 @@ namespace LRUCache;
  * @author  Rogério Vicente
  * @license MIT (see the LICENSE file for details)
  */
-class LRUCache {
+class LRUCache implements \Iterator {
 
     /**
      * @var int the current number of elements
@@ -37,6 +37,11 @@ class LRUCache {
     private $tail;
 
     /**
+     * @var Node
+     */
+    private $workingNode;
+
+    /**
      * @param int $maxCapacity the max number of elements the cache allows
      */
     public function __construct ( $maxCapacity ) {
@@ -47,18 +52,6 @@ class LRUCache {
 
         $this->head->set_next( $this->tail );
         $this->tail->set_previous( $this->head );
-    }
-
-    /**
-     * Performs an out of order walk of the cache
-     *
-     * @param $callback
-     */
-    public function each ( $callback ) {
-
-        array_walk( $this->hashmap, function ( $node ) use ( $callback ) {
-            $callback( $node->get_data() );
-        } );
     }
 
     /**
@@ -220,6 +213,29 @@ class LRUCache {
         $node->get_next()->set_previous( $node->get_previous() );
 
         // $node is now dangling
+    }
+
+    /**
+     * Iterator Functions
+     */
+    public function current () {
+        return $this->workingNode->get_data();
+    }
+
+    public function key () {
+        return $this->workingNode->get_key();
+    }
+
+    public function next () {
+        $this->workingNode = $this->workingNode->get_next();
+    }
+
+    public function rewind () {
+        $this->workingNode = $this->head->get_next();
+    }
+
+    public function valid () {
+        return !is_null($this->workingNode->get_next());
     }
 
 }

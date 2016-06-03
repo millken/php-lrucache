@@ -6,7 +6,7 @@ class NodeTest extends PHPUnit_Framework_TestCase {
 
     public function test_set_data () {
 
-        $node = new Node();
+        $node = new Node(1, 2);
 
         $node->set_data(12345);
 

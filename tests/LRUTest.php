@@ -5,7 +5,7 @@ use LRUCache\LRUCache;
 /**
  * Class LRUCacheTest
  */
-class LRUCacheTest extends PHPUnit_Framework_TestCase {
+class LRUTest extends PHPUnit_Framework_TestCase {
 
     public function testStartsEmpty() {
         $lru = new LRUCache(1000);
@@ -103,22 +103,6 @@ class LRUCacheTest extends PHPUnit_Framework_TestCase {
         $lru->put($key4, $value4);
 
         $this->assertNull($lru->get($key1));
-    }
-
-    public function testCacheEach () {
-        $numEntries = 5;
-        $lru = new LRUCache($numEntries);
-
-        foreach ( range(0,$numEntries) as $i ) {
-            $lru->put($i, $i);
-        }
-
-        $lru->each(function (&$node) {
-            $node *= 2;
-        });
-
-        $this->assertEquals($lru->get(4), 8);
-
     }
     
     public function testExists () {
