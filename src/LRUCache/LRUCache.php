@@ -6,8 +6,6 @@ namespace LRUCache;
  * Class that implements the concept of an LRU Cache
  * using an associative array as a naive hashmap, and a doubly linked list
  * to control the access and insertion order.
- * @author  Rogério Vicente
- * @license MIT (see the LICENSE file for details)
  */
 class LRUCache implements \Iterator {
 
