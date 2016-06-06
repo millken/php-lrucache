@@ -6,6 +6,7 @@ Forked from [https://github.com/rogeriopvl/php-lrucache][3]
 
 Changes
 * Reduce cost of inserting to cache from O(n) to O(1)
+* Make cache iterable
 * Fix phpunit tests
 
 ## Intro
