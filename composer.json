@@ -1,21 +1,12 @@
 {
-    "name": "justin-robinson/lrucache",
+    "name": "nicklasw/lrucache",
     "description": "PHP LRU Cache implementation",
     "keywords": ["php", "lru", "cache"],
-    "homepage": "https://github.com/justin-robinson/php-lrucache",
+    "homepage": "https://github.com/NicklasWallgren/php-lrucache",
     "license": "Apache-2.0",
-    "authors": [
-        {
-            "name": "Justin Robinson",
-            "email": "jrob09bhs@gmail.com",
-            "homepage": "https://jor.pw",
-            "role": "Developer"
-        }
-    ],
     "minimum-stability" : "stable",
     "require": {
         "php": ">=5.4.0",
-        "satooshi/php-coveralls": "^1.0"
     },
     "require-dev": {
         "phpunit/php-code-coverage": "*",
