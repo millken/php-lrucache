@@ -1,8 +1,8 @@
 {
-    "name": "nicklasw/lrucache",
+    "name": "millken/lrucache",
     "description": "PHP LRU Cache implementation",
     "keywords": ["php", "lru", "cache"],
-    "homepage": "https://github.com/NicklasWallgren/php-lrucache",
+    "homepage": "https://github.com/millken/php-lrucache",
     "license": "Apache-2.0",
     "minimum-stability" : "stable",
     "require": {
